@@ -1,9 +1,9 @@
 
-from bottle import Bottle, jinjaz_template as template, \
+from bottle import Bottle, jinja2_template as template, \
 request, redirect
 from bottle import response 
 import routes
-from models import connection, Books 
+from models import connection, Book
 from utils.auth import Auth 
 import urllib.parse as urlpar
 #routesからappを読み込む
@@ -17,10 +17,10 @@ def list():
 #認証確認
     auth.check_login()
     
-    bookList = connection.query(Books.name,
-                            Books. volume, Books.author, 
-                            Books.publisher, Books.memo,
-                            Books.id)\
-            .filter(Books.delF1g == False).al1()
-    headers = ['書名', '卷数', '著者', '出版社', '毛', '操作']
-    return template('list.html', booklist=bookList, headers=headers)
+    bookList = connection.query(Book.name,
+                            Book. volume, Book.author, 
+                            Book.publisher, Book.memo,
+                            Book.id_)\
+            .filter(Book.delFlag == False).all()
+    headers = ['書名', '卷数', '著者', '出版社', 'メモ', '操作']
+    return template('list.html', bookList=bookList, headers=headers)

@@ -1,19 +1,20 @@
-from email.mime.application import MIMEApplication
-import bottle
-# 各パスルーティング
-import routes
-# import routes_form
-import routes_list
-import routes_login
-from utils.session import session
+from bottle import Bottle, \
+    jinja2_template as template, \
+        static_file, request, redirect
+from bottle import response 
+from utils.session import Session 
+#from utils.auth import Auth
 
-app = routes.app
-app_sess = routes.app_sess
+app = Bottle()
+sess = Session()
+app_sess = sess. create_session(app)
 
-if __name__ == '__main__':
-    # This setting is for running in development.
-    bottle.run(app=app_sess, host='0.0.0.0', port=8888, reloader=True, debug=True)
-else:
-    # Add the following line for WSGI application deployment
-    application = app_sess
+@app.get('/static/<filePath:path>')
+def static(filePath):
+    return static_file(filePath, root='./static')
+
+@app.route('/test')
+def test():
+    aaa = request.query.test
+    return aaa
 
